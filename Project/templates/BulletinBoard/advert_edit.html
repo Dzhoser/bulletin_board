@@ -1,0 +1,30 @@
+
+{% extends 'default.html' %}
+
+{% load static %}
+
+{% block background %}
+    {% static 'assets/img/background2.jpg' %}
+{% endblock background %}
+
+{% block MMORPG %}
+    Создать объявление
+{% endblock MMORPG %}
+
+{% block preview %}
+   <form action="" method="post" enctype="multipart/form-data">  <!--IMPORTANT PART: enctype="multipart/form-data". files won't be uploaded without it-->
+    {% csrf_token %}
+        <tr>       
+            <td>Заголовок объявления:</td>
+            <td>{{ form.title }}</td>
+        </tr>
+        <p><tr>Текст объявления:</tr></p>
+        <tr>{{ form.text }}</tr>
+        <p><td>Категория:</td>
+        <td>{{ form.category }}</td></p>
+
+        <p><td>Загрузить файл:</td>
+        <td>{{ form.upload }}</td></p>
+        <input type="submit" value="{{ button }}" /> 
+   </form>
+{% endblock preview %}

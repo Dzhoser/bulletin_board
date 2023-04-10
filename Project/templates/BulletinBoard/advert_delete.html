@@ -1,0 +1,16 @@
+
+{% extends 'default.html' %}
+
+{% load static %}
+
+{% block background %}
+    {% static 'assets/img/background.jpg' %}
+{% endblock background %}
+
+{% block preview %}
+<form action="" method="post">
+    {% csrf_token %}
+    <p>Объявление "{{ object.title }}" будет удалено.</p>
+    <p><input type="submit" value="Delete" /></p>
+</form>
+{% endblock preview %}

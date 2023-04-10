@@ -1,0 +1,90 @@
+
+{% extends 'default.html' %}
+
+{% load static %}
+
+{% load custom_tags %}
+
+{% block MMORPG %}
+    List of responses have been sent by <span style="text-decoration: underline; color: rgb(61, 118, 172);" >"{{ user_ }}" </span>
+{% endblock MMORPG %}
+
+{% block background %}
+    {% static 'assets/img/background2.jpg' %}
+{% endblock background %}
+
+{% block preview %}
+{% if responses_ad %}
+
+{% for response in responses_ad %}
+    <div class="post-preview">
+        <a>
+            <h3 class="post-subtitle"><em>Отклик: </em> {{ response.text }}</h3>
+            <a href="{% url 'advert_detail' response.advert.id %}">
+            <h6 class="post-subtitle"><em>Объявление:</em> {{ response.advert.title }}</h6></a>
+        </a>
+            {% if response.accepted %}
+                <em>Accepted</em> <Image id="" upload src="{% static 'assets/img/accepted.png' %}" width="2%" height="2%"/></p>
+            {% else %}
+            <em>Not accepted</em> <Image id="" upload src="{% static 'assets/img/decline.png' %}" width="2%" height="2%"/></p>
+            {% endif %}
+
+            <!-- delete button  -->
+            <a href="{% url 'response_delete' response.id %}">
+            <input type="submit" value="Delete" /></a></p>
+
+        <p class="post-meta">
+            <a href="#!">Пользователь "{{ response.author }}"</a>
+            сделал отклик на {{ response.createTime }}
+        </p>
+    </div>
+    <!-- Divider -->
+    <hr class="my-4" />
+{% endfor %}
+{% else %}
+<h2 class="post-title">Отклики не найдены</h2>
+{% endif %}
+{% endblock preview %}
+
+{% block search %}
+    <hr>
+    <h3 class="site-heading"> Откликов на объявление: </h3>
+    <h2 class="site-heading"><em>"{{ advert_.title }}"</em></h2>
+{% endblock search %}
+
+{% block pagination %}
+{# Добавляем пагинацию на страницу #}
+<div class="small text-center text-muted fst-italic">
+    {# Добавляем "<" #}
+    {% if page_obj.has_previous %}
+        <a href="?{% url_replace page=page_obj.previous_page_number %}"><</a>
+    {% endif %}
+
+    {# Информация о предыдущих страницах #}
+    {% if page_obj.has_previous %}
+        <a href="?{% url_replace page=1 %}">1</a>
+       {% if page_obj.previous_page_number != 1 %}
+           ...
+           <a href="?{% url_replace page=page_obj.previous_page_number %}">{{ page_obj.previous_page_number }}</a>
+       {% endif %}
+    {% endif %}
+
+    {# Информация о текущей странице #}
+    {{ page_obj.number }}
+
+    {# Информация о следующих страницах #}
+    {% if page_obj.has_next %}
+        <a href="?{% url_replace page=page_obj.next_page_number %}">{{ page_obj.next_page_number }}</a>
+       {% if paginator.num_pages != page_obj.next_page_number %}
+           ...
+           <a href="?{% url_replace page=page_obj.paginator.num_pages %}">{{ page_obj.paginator.num_pages }}</a>
+       {% endif %}
+    {% endif %}
+
+    {# Добавляем ">" #}
+    {% if page_obj.has_next %}
+        <a href="?{% url_replace page=page_obj.next_page_number %}">></a>
+    {% endif %}
+</div>
+{% endblock pagination %}
+

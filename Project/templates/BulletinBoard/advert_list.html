@@ -1,0 +1,89 @@
+
+{% extends 'default.html' %}
+
+{% load static %}
+
+{% block title %}
+    Bulletin Board
+{% endblock title %}
+
+{% block background %}
+    {% static 'assets/img/background.jpg' %}
+{% endblock background %}
+
+{% block Bulletin_Board %}
+    Доска объявлений
+{% endblock Bulletin_Board %}
+
+{% block MMORPG %}
+    Приветствуем на нашей доске объявлений!
+    <hr>
+    <caption><em>Объявлений: {{ total }}</em></caption>
+{% endblock MMORPG %}
+
+{% block preview %}
+    {% if adverts %}
+        {% for advert in adverts %}
+            <div class="post-preview">
+            <h7>Категория: <span style="color: rgb(12, 80, 119);"> <em>{{ advert.category }}</em></span></h7>
+                <a href="{% url 'advert_detail' advert.id %}">
+                    <h2 class="post-title">{{ advert.title.title }}</h2>
+                    <h3 class="post-subtitle">{{ advert.text.title|truncatechars:124 }}</h3>
+                </a>
+                <p class="post-meta">
+                    Размещено
+                    <a href="#!">"{{ advert.author }}"</a>
+                    on {{ advert.createTime }}
+                    <!-- edit time-->
+                    {% if advert.editTime is not None %}
+                        (corrected: {{ advert.editTime }})
+                    {% endif %}
+                </p>
+            </div>
+            <!-- Divider -->
+            <hr class="my-4" />
+        {% endfor %}
+    {% else %}
+        <h2 class="post-title">No adverts</h2>
+    {% endif %}
+{% endblock preview %}
+
+{% block pagination %}
+{# Добавляем пагинацию на страницу #}
+<div class="small text-center text-muted fst-italic">
+    {# Добавляем "<" #}
+    {% if page_obj.has_previous %}
+       <a href="?page={{ page_obj.previous_page_number }}"><</a>
+    {% endif %}
+
+    {# Информация о предыдущих страницах #}
+    {% if page_obj.has_previous %}
+       <a href="?page=1">1</a>
+       {% if page_obj.previous_page_number != 1 %}
+           ...
+           <a href="?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a>
+       {% endif %}
+    {% endif %}
+
+    {# Информация о текущей странице #}
+    {{ page_obj.number }}
+
+    {# Информация о следующих страницах #}
+    {% if page_obj.has_next %}
+       <a href="?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a>
+       {% if paginator.num_pages != page_obj.next_page_number %}
+           ...
+           <a href="?page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages }}</a>
+       {% endif %}
+    {% endif %}
+
+    {# Добавляем ">" #}
+    {% if page_obj.has_next %}
+       <a href="?page={{ page_obj.next_page_number }}">></a>
+    {% endif %}
+</div>
+{% endblock pagination %}
+
+<!-- to hide "Back to BulletinBoard" button if main page-->
+{% block back_to_hide %}
+{% endblock back_to_hide %}

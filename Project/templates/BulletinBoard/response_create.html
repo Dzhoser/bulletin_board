@@ -1,0 +1,25 @@
+{% extends 'default.html' %}
+
+{% load static %}
+
+{% block background %}
+    {% static 'assets/img/background.jpg' %}
+{% endblock background %}
+
+{% block MMORPG %}
+    Создайте отклик!
+    <hr>
+    <em>Объявление:</em>
+    <a style="color: rgb(122, 197, 226);" href="{% url 'advert_detail' advert_title.id %}">
+    "{{ advert_title.title}}"</a>
+{% endblock MMORPG %}
+
+{% block preview %}
+   <form action="" method="post"> 
+    {% csrf_token %}
+        <p>Отклик:</p>
+        <p>{{ form.text }}</p>
+        <input type="submit" value="Создать" />
+   </form>
+{% endblock preview %}
+
